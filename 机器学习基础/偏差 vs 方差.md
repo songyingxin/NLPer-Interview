@@ -10,26 +10,37 @@ tags: 机器学习
 
 - 记在**训练集 D** 上学得的模型为
 
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=f(\boldsymbol{x};D)"><img src="../_assets/公式_20180817211749.png" height="" /></a></div>
+  $$
+  f(x;D)
+  $$
+  
 
   模型的**期望预测**为
-
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;\hat{f}(\boldsymbol{x})=\mathbb{E}_D[f(\boldsymbol{x};D)]"><img src="../_assets/公式_20180817210758.png" height="" /></a></div>
+  $$
+  \hat{f}(x) = E_D [f(x;D)]
+  $$
+  
 
 - **偏差**（Bias）
-
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;bias^2(\boldsymbol{x})=(\hat{f}(\boldsymbol{x})-y)^2"><img src="../_assets/公式_20180817210106.png" height="" /></a></div>
+  $$
+  bias^2(x) = (\hat{f}(x) - y)^2
+  $$
 
   > **偏差**度量了学习算法的**期望预测**与**真实结果**的偏离程度，即刻画了学习算法本身的拟合能力；
 
 - **方差**（Variance）
-
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="../_assets/公式_20180817211903.png" height="" /></a></div>
+  $$
+  var(x) = E_D[(f(x;D) - \hat{f}(x))^2]
+  $$
+  
 
   > **方差**度量了同样大小的**训练集的变动**所导致的学习性能的变化，即刻画了**数据扰动所造成的影响（模型的稳定性**）；
-  >
 
-  <div align="center"><a href="http://www.codecogs.com/eqnedit.php?latex=\large&space;var(\boldsymbol{x})=\mathbb{E}_D\left&space;[&space;\left&space;(&space;f(\boldsymbol{x};D)-\hat{f}(\boldsymbol{x})&space;\right&space;)^2&space;\right&space;]"><img src="../_assets/公式_20180817212111.png" height="" /></a></div>
+  $$
+  \varepsilon^2 = E_D[(y_D-y)^2]
+  $$
+
+  
 
 - **噪声**则表达了**在当前任务上任何学习算法所能达到的期望泛化误差的下界，即刻画了学习问题本身的难度。**
 
@@ -69,3 +80,6 @@ tags: 机器学习
 6. 减少模型规模，降低模型复杂度（每层神经元个数/神经网络层数）： **谨慎使用。** 一般情况下，对于复杂问题如CV或NLP等问题不会降低模型复杂度，而对于简单问题，采用简单模型往往训练速度更快，效果很好。
 7. 根据误差分析结果修改输入特征。
 8. 修改模型架构，使之更适合你的问题。 一般可以选择简单模型的情况下，不选择复杂模型。
+
+
+
