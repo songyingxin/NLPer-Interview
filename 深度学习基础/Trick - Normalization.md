@@ -30,7 +30,7 @@ $$
 
 - H： 某层中的隐层单元数
 
-
+## 3. Weight Normalization
 
 ---
 
@@ -88,6 +88,10 @@ LN 对层进行 Normalization ， BN 对 batch 进行 Normalization。 LN 拜托
 
 当你发现你的网络训练速度慢，梯度消失，爆炸等问题时， 不妨考虑加入 BN 或 LN 来试试。
 
+### 6. BN 在何处做？
+
+BN 可以对**第 L 层激活函数输出值**或**对第 L层激活函数的输入值**进行 Normalization， 对于两个不同的位置，不少研究已经表明：**放在第 L 层激活函数输出值会更好**。
+
 
 
 ## Reference
@@ -101,3 +105,5 @@ LN 对层进行 Normalization ， BN 对 batch 进行 Normalization。 LN 拜托
 [4]  Batch Renormalization: Towards Reducing Minibatch Dependence in Batch-Normalized Models
 
 [深度学习中 Batch Normalization为什么效果好？](https://www.zhihu.com/question/38102762/answer/85238569) - 知乎 
+
+[深度学习中的Normalization模型](<http://www.cvmart.net/community/article/detail/368>)
