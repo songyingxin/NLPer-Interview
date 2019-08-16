@@ -35,6 +35,7 @@ https://blog.csdn.net/wzgbm/article/details/51721143
   >   L(\theta) = L(X_1, X_2, \cdots, X_n; \theta) = \prod_{i=1}^n f(X_i; \theta)
   >   $$
   >
+  >
 
 - **极大似然估计：** 对于给定的样本值$(x_1, x_2, \cdots, x_n)$ 有：
   $$
