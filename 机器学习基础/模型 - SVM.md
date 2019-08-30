@@ -71,55 +71,50 @@ $$
 $$
 
 
-扩展到n维空间中，任意点 $x$ 到超平面$w^Tx + b = 0$ 的距离为：
+扩展到n维空间中，任意点 $x$  到超平面$w^Tx + b = 0$ 的距离为：
 $$
 \frac{|w^Tx + b|}{||w||} \\
 ||w|| = \sqrt{w_1^2 + ... + w_n^2}
 $$
 假设，支持向量到超平面的距离为 $d$ ，那么就有：
 $$
-\begin{cases} \frac{w^Tx + b}{||w||} \geq d, & y_i = +1 \\ \frac{w^Tx + b}{||w||} \leq -d, & y_i = -1 \end{cases}
+\begin{cases} \frac{w^Tx_i + b}{||w||} \geq d, & y_i = +1 \\ \frac{w^Tx_i + b}{||w||} \leq -d, & y_i = -1 \end{cases}
 $$
 稍作转化可得到：
 $$
-\begin{cases} \frac{w^Tx + b}{||w||d} \geq 1, & y_i = +1 \\ \frac{w^Tx + b}{||w||d} \leq -1, & y_i = -1 \end{cases}
+\begin{cases} \frac{w^Tx_i + b}{||w||d} \geq 1, & y_i = +1 \\ \frac{w^Tx_i + b}{||w||d} \leq -1, & y_i = -1 \end{cases}
 $$
 考虑到 $||w||d$ 为正数，我们暂且令它为 1（之所以令它等于 1，是为了方便推导和优化，且这样做对目标函数的优化没有影响）：
 $$
-\begin{cases} w^Tx + b >= +1, & y_i = +1 \\ w^Tx + b <= -1, & y_i = -1 \end{cases}
+\begin{cases} w^Tx_i + b >= +1, & y_i = +1 \\ w^Tx_i + b <= -1, & y_i = -1 \end{cases}
 $$
 
 两个方程合并，则有：
 $$
-y_i (w^Tx + b) \geq 1
+y_i (w^Tx_i + b) \geq 1
 $$
 那么我们就得到了最大间隔超平面的上下两个超平面：
 
 ![2](..\img\SVM\2.jpg)
 
-每个**支持向量**到超平面的距离为：
+两个异类超平面的公式分别为：
 $$
-d = \frac{|w^Tx + b|}{||w||}
+\begin{cases} w^Tx_i + b = +1, & y_i = +1 \\ w^Tx_i + b = -1, & y_i = -1 \end{cases}
 $$
-我们的目的是最大化这个距离：
+那么两个异类超平面之间的间隔为：
 $$
-max \quad 2 * \frac{|w^Tx + b|}{||w||}
+\frac{2}{||w||}
 $$
-在支持向量确定以后， $w^Tx + b$ 是个常数，所以可以转化为：
+我们的目的是最大化这种间隔：
 $$
-max \quad \frac{2}{||w||}
-$$
-可以转化为：
-$$
-min \quad \frac{1}{2} ||w||
-$$
-为了方便计算，我们去除 $||w||$ 的根号，则有：
-$$
-min \quad \frac{1}{2} ||w||^2
+\begin{align}
+max \quad \frac{2}{||w||} &:= min \quad \frac{1}{2} ||w|| \\
+&:= min \quad \frac{1}{2} ||w||^2
+\end{align}
 $$
 那么我们的最优化问题为：
 $$
-min \quad \frac{1}{2} ||w||^2 \quad st. y_i(w^Tx + b) \geq 1
+min \quad \frac{1}{2} ||w||^2 \quad \\ st. y_i(w^Tx_i + b) \geq 1
 $$
 
 ### 2. 对偶问题
@@ -128,7 +123,7 @@ $$
 
 高等数学中，其等式约束优化问题为：
 $$
-min f(x_1, ..., x_n) \quad  st. \quad h_k(x_1, ... , x_n) = 0
+min \, f(x_1, ..., x_n) \quad  st. \quad h_k(x_1, ... , x_n) = 0
 $$
 那么令：
 $$
@@ -155,10 +150,12 @@ $$
 
 对于我们的问题：
 $$
-min \quad \frac{1}{2} ||w||^2 \quad st. \quad  g_i(w) = 1- y_i(w^Tx + b) \leq 0
+min \quad \frac{1}{2} ||w||^2 \quad \\ st. \quad  g_i(w) = 1- y_i(w^Tx_i + b) \leq 0
 $$
 引入松弛变量 $a_i^2$ 得到：
 $$
+f(w) =  \frac{1}{2} ||w||^2 \\
+g_i(w) = 1- y_i(w^Tx_i + b)  \\
 h_i(w, a_i) = g_i(w) + a_i^2 = 0
 $$
 这里加平方主要为了不再引入新的约束条件，如果只引入 $a_i$ 那我们必须要保证 $a_i \geq 0$ 才能保证 $h_i(w, a_i)$ ，这不符合我们的意愿。
@@ -176,7 +173,7 @@ $$
 \frac{\delta L}{ \delta w_i} =\frac{\delta f}{\delta w_i} + \sum_{i=1}^n \lambda_i \frac{\delta g_i}{\delta w_i} =0 \\ 
 \frac{\delta L}{ \delta a_i} = 2 \lambda_i a_i =0 \\
 \frac{\delta L}{ \delta \lambda_i}=g_i(w) + a_i^2 = 0 \\
-\lambda_i \geq 0
+\lambda_i \geq 0  \qquad ？ 需要看一看
 \end{cases}
 $$
 针对 $\lambda_i a_i = 0$ 有两种情况：
@@ -190,7 +187,7 @@ $$
 此时，方程组转化为：
 $$
 \begin{cases} 
-\frac{\delta L}{ \delta w_i} =\frac{\delta f}{\delta w_i} + \sum_{i=1}^n \lambda_i \frac{\delta g_i}{\delta w_i} =0 \\ 
+\frac{\delta L}{ \delta w_i} =\frac{\delta f}{\delta w_i} + \sum_{i=j}^n \lambda_j \frac{\delta g_i}{\delta w_i} =0 \\ 
 \lambda_ig_i(w) = 0 \\
 g_i(w) \leq 0 \\
 \lambda_i \geq 0
@@ -198,10 +195,77 @@ g_i(w) \leq 0 \\
 $$
 以上便是不等式约束优化优化问题的 **KKT(Karush-Kuhn-Tucker) 条件**， $\lambda_i$ 称为 KKT 乘子。
 
+KTT 条件中，对于不同样本点来说
+
+- 支持向量 $g_i(w) = 0$， 此时 $\lambda_i > 0$ 即可
+- 其余向量 $g_i(w) < 0$， 此时 $\lambda_i = 0$
+
+回到原优化问题中：
+$$
+\begin{align}
+L(w, \lambda, a) &= \frac{1}{2} f(w) + \sum_{i=1}^n \lambda_i h_i(w) \\
+&= \frac{1}{2} f(w) + \sum_{i=1}^n \lambda_i [g_i(w) + a_i^2] \\
+&= \frac{1}{2} f(w) + \sum_{i=1}^n \lambda_i g_i(w) + \sum_{i=1}^n \lambda_i a_i^2
+\end{align}
+$$
+由于 $\sum_{i=1}^n \lambda_ia_i^2 \geq 0$， 那么问题可以转化为：
+$$
+\begin{align}
+L(w, \lambda) &=  \frac{1}{2} f(w) + \sum_{i=1}^n \lambda_i g_i(w) \\
+&=  \frac{1}{2} ||w||^2 + \sum_{i=1}^n \lambda_i (1- y_i(w^Tx_i + b) )
+\end{align}
+$$
+假设我们找到了最佳的参数 $w$ 使得 $\frac{1}{2} ||w||^2 = p$ ，又因为 $\sum_{i=1}^n \lambda_i (1- y_i(w^Tx + b) ) \leq 0$， 因此有 $L(w, \lambda) \leq p$， 我们需要找到最佳的参数 $\lambda$， 使得 $L(w, \lambda)$ 接近 p， 此时问题转化为：
+$$
+min_wmax_{\lambda} \, L(w, \lambda) \quad \\ s.t. \quad \lambda_i \geq 0
+$$
+
+### 3. 引入对偶问题 -- TODO
+
+- 弱对偶性： 最大的里面挑出来的最小的也要比最小的里面挑出来的最大的要大
+  $$
+  min \, max \, f \geq max \, min \, f
+  $$
+
+- 强对偶性：KKT 条件是强对偶性的充要条件。
+
+### 4. SVM 优化
+
+- SVM 的优化问题为：
+  $$
+  min \quad \frac{1}{2} ||w||^2 \quad \\ st. \quad  g_i(w) = 1- y_i(w^Tx_i + b) \leq 0
+  $$
 
 
 
+- 构造拉格朗日函数：
+  $$
+  min_{w,b}max_{\lambda} L(w, b, \lambda) = \frac{1}{2} ||w||^2 + \sum_{i=1}^n \lambda_i (1- y_i(w^Tx_i + b) ) \\
+  s.t. \lambda_i \geq 0
+  $$
 
+- 利用强对偶性转化：
+  $$
+  max_{\lambda}min_{w,b} \, L(w, b, \lambda)
+  $$
+  对参数 $w, b$ 求偏导有：
+  $$
+  \frac{\delta L}{\delta w} = w - \sum_{i=1}^n \lambda_i x_i y_i = 0 \\
+  \frac{\delta L}{\delta b} = \sum_{i=1}^n \lambda_i y_i = 0
+  $$
+  得到：
+  $$
+  w =  \sum_{i=1}^n \lambda_i x_i y_i \\
+  \sum_{i=1}^n \lambda_i y_i = 0
+  $$
+  将两式带入到 $L(w, b, \lambda)$ 中有：
+  $$
+  \begin{align}
+  min_{w,b} \, L(w, b, \lambda) &=\sum_{j=1}^n \lambda_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \lambda_i \lambda_j y_i y_j x_i^Tx_j
+  \end{align}
+  $$
+
+- 求解模型：
 
 
 ### 2. 软间隔SVM
@@ -255,69 +319,31 @@ $$
 
 其实在特别远的区域，哪怕你增加10000个样本点，对于超平面的位置，也是没有作用的，因为分割线是由几个关键点决定的（图上三个），这几个关键点支撑起了一个分离超平面，所以这些关键点，就是**支持向量**。
 
-### 2. SVM 什么时候用线性核？
+### 2.  什么是SVM ？
 
-当数据的特征提取的较好，所包含的信息量足够大，很多问题是线性可分的那么可以采用线性核。
+SVM 是一种二类分类模型。它的基本思想是在特征空间中寻找间隔最大的分离超平面使数据得到高效的二分类， 主要分三种情况：
 
-### 3. SVM 什么时候用高斯核？
+- 当训练样本线性可分时，通过硬间隔最大化，学习一个线性分类器，即线性可分支持向量机；
+- 当训练数据近似线性可分时，引入松弛变量，通过软间隔最大化，学习一个线性分类器，即线性支持向量机
+- 当训练数据线性不可分时，通过使用核技巧及软间隔最大化，学习非线性支持向量机。
 
-若**特征数较少,样本数适中,对于时间不敏感,遇到的问题是线性不可分**的时候可以使用高斯核来达到更好的效果。
+### 3. SVM 为何采用间隔最大化？
 
-### 4. 什么是SVM ？
+当训练数据线性可分时，存在无穷个分离超平面可以将两类数据正确分开。
 
-支持向量机为一个二分类模型，它的基本模型定义为特征空间上的间隔最大的线性分类器。而它的学习策略为**最大化分类间隔，最终可转化为凸二次规划问题求解。**
+- 感知机利用误分类最小策略，求得分离超平面，不过此时的解有无穷多个。
+- 线性可分支持向量机利用间隔最大化求得最优分离超平面，这时，解是唯一的。
 
-### 5. SVM 与 LR 的区别
+SVM 求得的分隔超平面所产生的分类结果是最鲁棒的，对未知实例的泛化能力最强。
+
+### 4. SVM 与 LR 的区别
 
 - LR是参数模型，SVM为非参数模型。
 - LR采用的损失函数为logisticalloss，而SVM采用的是hingeloss。
 - 在学习分类器的时候，SVM只考虑与分类最相关的少数支持向量点。
 - LR的模型相对简单，在进行大规模线性分类时比较方便。
 
-### 6. SVM 作用与基本实现原理
-
-- 作用： SVM可以用于解决二分类或者多分类问题。
-- 原理： SVM的目标是寻找一个最优化超平面在空间中分割两类数据，这个最优化超平面需要满足的条件是：**离其最近的点到其的距离最大化，这些点被称为支持向量。**
-
-### 7. 推到一下 SVM
-
-#### 1. 模型定义
-
-$$
-max \, margin(w,b) \quad st. y_i(w^Tx_i+b) > 0 \\
-$$
-
-- 支持向量到超平面的距离为**样本点到分类超平面的最小距离**：
-
-$$
-\begin{align}
-margin(w,b) &= min_{w,b,x_i}  distance(w,b,x_i) \\
-&= min_{w,b,x_i} \frac{1}{||w||} |w^Tx_i + b|
-\end{align}
-$$
-
-- 我们的目的是最大化支持向量到分类超平面的距离：
-  $$
-  max_{w,b} \, min_{x_i} \frac{1}{||w||} |w^Tx_i + b| \quad st. \, y_i(w^Tx_i+b) > 0\\
-  := max_{w,b} \, min_{x_i} \frac{1}{||w||} y_i(w^Tx_i + b) \\
-  := max_{w,b}  \frac{1}{||w||} \, min_{x_i} y_i(w^Tx_i + b)
-  $$
-
-- 对于  $y_i(w^Tx_i+b) > 0$ ， 存在 $r > 0$ 使得 $min_{x_i, y_i} y_i(w^Tx_i+b)  = r$。 我们可以直接设置 $r = 1 $ （因为 w，b 是可以随意缩放的）， 对整个等式是没有影响的。 此时转化为：
-  $$
-  max_{w,b} \frac{1}{||w||} \quad st. \quad min \, y_i(w^Tx_i + b) = 1 \\
-  \implies \quad min_{w,b} \frac{1}{2} w^Tw \quad st. \, y_i(w^Tx_i + b) \geq 1; \, i = 1, ...,n
-  $$
-
-
-
-#### 2. 模型求解
-
-
-
-
-
-### 8. SVM 软间隔与硬间隔表达式
+### 5. SVM 软间隔与硬间隔表达式
 
 - 硬间隔：
   $$
@@ -330,15 +356,17 @@ $$
   $$
 
 
+### 6. 求解目标 -- 硬间隔
 
-### 9. SVM 使用对偶计算的目的，推一下？
 
-- 目的：
 
-  > 1. 方便核函数的引入
-  > 2. 原问题的求解复杂度与特征的维数相关，而转成对偶问题后只与问题的变量个数有关。
+### 9. SVM 使用对偶计算的目的，推一下？ -- TODO
 
-  由于SVM的变量个数为支持向量的个数，相较于特征位数较少，因此转对偶问题。通过拉格朗日算法使带约束的优化目标转为不带约束的优化函数，使得W和b的偏导数等于零，带入原来的式子，再通过转成对偶问题。
+- 方便核函数的引入
+
+- 原问题的求解复杂度与特征的维数相关，而转成对偶问题后只与问题的变量个数有关。
+
+由于SVM的变量个数为支持向量的个数，相较于特征位数较少，因此转对偶问题。通过拉格朗日算法使带约束的优化目标转为不带约束的优化函数，使得W和b的偏导数等于零，带入原来的式子，再通过转成对偶问题。
 
 ### 10 . SVM 的物理意义？
 
