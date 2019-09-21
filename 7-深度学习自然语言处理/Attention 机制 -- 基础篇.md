@@ -15,11 +15,11 @@ Attention首先分为两大类：**Hard Attention 与 Soft Attention**， 两者
 
 ## Global vs Local [2] 
 
-在 soft attention阵营中，很快又划分为两大阵营： Glocal attention 与 Local attention， **二者的区别在于关注的范围大小不同**， 其中，Global attention 关注**全部的文字序列**，而 Local attention 关注的是**固定的窗口中的所有文字序列**。
+在 soft attention阵营中，很快又划分为两大阵营： **Glocal attention** 与 **Local attention**， **二者的区别在于关注的范围大小不同**， 其中，Global attention 关注**全部的文字序列**，而 Local attention 关注的是**固定的窗口中的所有文字序列**。
 
-比较二者， Global attention 的计算量要比 Local Attention 要大，尤其是对于长句子而言，效率变得很低； 而 Local Attention 只与窗口内的文字相关，因此窗口的大小就显得至关重要了，且在local attention 中多了一个**预测中心词 $p_t$ 的过程**，这有可能会忽略一些重要的词， 但同时，如果选择适当，那么 local attention 理应会降低无关词的干扰，当然，锁带来的收益并不大。 而对于窗口的设置，论文中采用**高斯分布**来实现，如下：
+比较二者， Global attention 的计算量要比 Local Attention 要大，尤其是对于长句子而言，效率变得很低； 而 Local Attention 只与窗口内的文字相关，因此窗口的大小就显得至关重要了，且在local attention 中多了一个**预测中心词 $p_t$ 的过程**，这有可能会忽略一些重要的词， 但同时，如果选择适当，那么 local attention 理应会降低无关词的干扰，当然，所带来的收益并不大。 而对于窗口的设置，论文中采用**高斯分布**来实现，如下：
 $$
-\hat{a_{i,j}} = a_{i,j} \, e^{- \frac{(s - p_t)^2}{2 \sigma^2}}, \sigma = \frac{D}{2}
+\hat{a}_{i,j} = a_{i,j} \, e^{- \frac{(s - p_t)^2}{2 \sigma^2}}, \sigma = \frac{D}{2}
 $$
 另一方面，由于Global Attention考虑的信息较多，因此从原理上讲要更好一些，毕竟local attention 可能会忽略对当前输出很重要的词，且 Local Attention 的表现与窗口的大小密切相关，如果设置小了，可能会导致效果变得很差。 
 
@@ -37,7 +37,9 @@ $$
 
 ![](http://ww1.sinaimg.cn/large/006gOeiSly1g0tf397umyj30kn08uq34.jpg)
 
-在上图中，Query 表示我们的问题信息，在阅读理解问题中，其对应的就是 question，而在机器翻译中，常常采用上一时刻的输出信息 $S_{i-1}$ 作为 Query；而对于而言，大多数情况下与是相同的，一般指的是第时刻词的表示比如在机器翻译中，与都采用输入层的隐层输出 作为Query； 而对于 { key:value }而言，大多数情况下key与value是相同的，一般指的是第 j 个词的表示, 比如在机器翻译中， key 与 value 通常采用词的隐层输出 h_j  。我们通过计算 Query 与各个 key 之间的相似性或相关性来获得 $a_{i,j}$，然后对各个进行加权求和：
+在上图中，Query 表示我们的问题信息，在阅读理解问题中，其对应的就是 question，而在机器翻译中，常常采用上一时刻的输出信息 $S_{i-1}$ 作为 Query；
+
+对于 { key:value }而言，大多数情况下key与value是相同的，一般指的是第 j 个词的表示, 比如在机器翻译中， key 与 value 通常采用词的隐层输出 $h_j$  。我们通过计算 Query 与各个 key 之间的相似性或相关性来获得 $a_{i,j}$，然后对各个进行加权求和：
 $$
 \alpha_{i,j} = \frac{e^{score(Query, Key(j))}}{\sum_{k=1}^t e^{score(Query, Key(k))}} \\
 c_i= \sum_{i=1}^n = \alpha_{i,j} h_j
@@ -45,7 +47,7 @@ $$
 由上式可以看到，对于Attention机制的整个计算过程，可以总结为以下三个过程：
 
 - **socre 函数：** 根据 Query 与 Key 计算两者之间的相似性或相关性， 即 socre 的计算。
-- **注意力权重计算：****通过一个softmax来对值进行归一化处理获得注意力权重值， 即$a_{i,j}$ 的计算。**
+- **注意力权重计算：**通过一个softmax来对值进行归一化处理获得注意力权重值， 即$a_{i,j}$ 的计算。
 - **加权求和生成注意力值：**通过注意力权重值对value进行加权求和， 即 $c_i$ 的计算。
 
 总的来说，Attention 无论如何变化，总是万变不离其宗。 对于大多数 Attention 的文章来说，其变化主要在于 Query， Key， Value 的定义以及第一阶段 Score 的计算方法，下面我们来详细讨论一下。
