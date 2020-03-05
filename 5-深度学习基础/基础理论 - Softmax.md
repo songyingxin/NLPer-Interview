@@ -2,6 +2,8 @@
 
 ---
 
+<https://zhuanlan.zhihu.com/p/79585726>
+
 ## 1. Softmax 定义
 
 $$
