@@ -97,6 +97,8 @@ $$
 
 ![2dconv](../img/CNN/2dconv.png)
 
+
+
 - 单通道：若输入卷积核尺寸为 $(k_h,k_w,1)$，卷积核在输入图像的空间维度上进行滑窗操作，每次滑窗和  $(k_h, k_w)$窗口内的值进行卷积操作，得到输出图像中的一个值。
 - 多通道：输入图像特征通道数为3，卷积核尺寸为 $(k_h,k_w ,3)$ ,每次滑窗与3个通道上的 $(k_h , k_w) $窗口内的所有值进行卷积操作，得到输出图像中的一个值。
 
@@ -104,7 +106,7 @@ $$
 class torch.nn.Conv2d:
 
 -- 输入输出数据：
-	Input: [N, C_in, H_in, H_out, L_in]: [batch_size, in_channels, input_len]
+	Input: [N, C_in, H_in, L_in]: [batch_size, in_channels, input_len]
     Output: [N, C_out, H_out, L_out]: [batch_size, out_channels, output_len]
 
 -- 参数：
