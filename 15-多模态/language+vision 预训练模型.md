@@ -16,9 +16,9 @@
 
 
 
+unicoder-vl：
 
-
-
+https://www.msra.cn/zh-cn/news/features/machine-reasoning-unicoder-vl
 
 
 
@@ -26,11 +26,29 @@
 
 ## Reference
 
-[1] Unicoder-VL: A Universal Encoder for Vision and Language by Cross-modal Pre-training  
+[1] Unicoder-VL: A Universal Encoder for Vision and Language by Cross-modal Pre-training  2019-12
 
-Unicoder-VL：https://www.msra.cn/zh-cn/news/features/machine-reasoning-unicoder-vl
+[2] VideoBERT: A Joint Model for Video and Language Representation Learning  2019-9
 
+ViLBERT: Pretraining Task-Agnostic Visiolinguistic Representations for Vision-and-Language Tasks  2019-8
 
+ERNIE-ViL: Knowledge Enhanced Vision-Language Representations Through Scene Graph  - 2020-6
+
+Vl-bert: Pre-training of generic visual-linguistic representations  2019-8
+
+Visualbert: A simple and performant baseline for vision and language  2019-8
+
+Uniter: Learning universal image-text representations   2019-9
+
+Imagebert: Cross-modal pre-training with large-scale weak-supervised image-text data  2020-1
+
+Unified vision-language pre-training for image captioning and vqa  -- 2019-9
+
+Pixel-bert: Aligning image pixels with text by deep multi-modal transformers  2020-4
+
+Lxmert: Learning cross-modality encoder representations from transformers. 2019-8
+
+FashionBERT- Text and Image Matching with Adaptive Loss for Cross-modal Retrieval   2020-5
 
 https://zhuanlan.zhihu.com/p/80917186  -- 多篇
 
@@ -38,7 +56,7 @@ https://zhuanlan.zhihu.com/p/150261938
 
 
 
-VideoBERT
+
 
 vl-bert： https://zhuanlan.zhihu.com/p/113700984
 
@@ -51,3 +69,5 @@ https://www.jiqizhixin.com/articles/2020-03-05
 
 
 https://www.zhihu.com/question/374681272
+
+ERNIE-VIL: KNOWLEDGE ENHANCED VISION-LANGUAGE REPRESENTATIONS THROUGH SCENE GRAPH
