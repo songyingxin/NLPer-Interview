@@ -33,7 +33,7 @@ $$
 
 ![Local Attention](http://ww1.sinaimg.cn/large/006gOeiSly1g0terwkhqmj30zk0k0wf1.jpg)
 
-## Attention的本质思想 [5][6]
+## Attention的本质思想 [5]  [6]
 
 ![](http://ww1.sinaimg.cn/large/006gOeiSly1g0tf397umyj30kn08uq34.jpg)
 
@@ -52,7 +52,7 @@ $$
 
 总的来说，Attention 无论如何变化，总是万变不离其宗。 对于大多数 Attention 的文章来说，其变化主要在于 Query， Key， Value 的定义以及第一阶段 Score 的计算方法，下面我们来详细讨论一下。
 
-## Score 函数的选择 [6][2]
+## Score 函数的选择 [6]  [2]
 
 Score 函数本质的思想就是度量两个向量的相似度。
 
@@ -118,7 +118,3 @@ $$
 [4] Neural Responding Machine for Short-Text Conversation
 
 [5] Attention is all you need
-
-[深度学习中的注意力机制](https://blog.csdn.net/qq_40027052/article/details/78421155)
-
-[7] https://zhuanlan.zhihu.com/p/47282410

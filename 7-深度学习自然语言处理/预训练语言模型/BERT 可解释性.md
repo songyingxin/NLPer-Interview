@@ -46,3 +46,13 @@ Investigating Entity Knowledge in BERT with Simple Neural End- To-End Entity Lin
 
 
 
+
+
+Visualizing and Measuring the Geometry of BERT
+
+BERT Rediscovers the Classical NLP Pipeline
+
+理解BERT每一层都学到了什么
+
+[https://www.zhihu.com/search?type=content&q=bert%20%20%E8%81%9A%E7%B1%BB](https://www.zhihu.com/search?type=content&q=bert  聚类)
+
