@@ -69,7 +69,7 @@ BERT 使用两个新的无监督预测任务来训练。
 - Label: NotNext
 ```
 
-### 4. Pre-training Procedure
+### 4. Pre-training 训练细节
 
 预训练数据集采用 **BooksCorpus（800M）**和 **English Wikipedia** 语料。
 
@@ -127,10 +127,10 @@ Roberta 于bert 都采用 512 个token 作为序列长度，但与bert不同的�
 
 ![](image/roberta_2.png)
 
-- Segment-pair + NSP：与bert一样。输入包含两个 segment，这两个segment可能会来自同一个文档或不同文档，两个segment 的token 数均小于 512，预训练任务包含 MLM 与 NSP。
-- Sentence+pair + NSP：输入包含两个 sentence，两个句子可能来自同一文档或不同文档，两个句子 token 数均少于 512。预训练任务包含 MLM 与 NSP。
-- Full-sentences：输入只有一部分，来自同一个文档或不同文档的连续句子，token总数不超过512。输入可能跨越文档边界，如果跨文档，则在上一个文档末尾添加文档边界token。不包含NSP任务。
-- Doc-sentences：输入只有一部分，输入来自同一个文档的连续句子，token总数不超过512。预训练不包含 NSP 任务。
+- **Segment-pair + NSP：**与bert一样。输入包含两个 segment，这两个segment可能会来自同一个文档或不同文档，两个segment 的token 数均小于 512，预训练任务包含 MLM 与 NSP。
+- **Sentence+pair + NSP：**输入包含两个 sentence，两个句子可能来自同一文档或不同文档，两个句子 token 数均少于 512。预训练任务包含 MLM 与 NSP。
+- **Full-sentences：**输入只有一部分，来自同一个文档或不同文档的连续句子，token总数不超过512。输入可能跨越文档边界，如果跨文档，则在上一个文档末尾添加文档边界token。不包含NSP任务。
+- **Doc-sentences：**输入只有一部分，输入来自同一个文档的连续句子，token总数不超过512。预训练不包含 NSP 任务。
 
 通过四个对比实验我们发现：
 
@@ -162,9 +162,7 @@ roberta 采用BPE 来分词
 
 通过上表我们看到，增加数据量带来的效果是显而易见的，而训练时间越长，获得的结果越好，但训练到一定程度，增益已经非常缓慢了。
 
-
-
-## 3. T5
+## 4. T5 [4]
 
 T5 本质上就是解决了人们对如何才能训练一个好的 PTM 的疑问。
 
@@ -260,15 +258,15 @@ T5 本质上就是解决了人们对如何才能训练一个好的 PTM 的疑问
 
 模型架构中，主要有 **Encoder-Decoder，Language model，Prefix LM** 这三种，如下图所示：
 
-![屏幕快照 2020-03-29 下午7.34.46.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdb129yh40j30mw0g4gpc.jpg)
+![](image/T5_3.png)
 
 - **Encoder-Decoder：**  encoder 采用**fully-visible** attention mask，decoder 中采用 **causal** attention mask。其实本质上与 "attention is all you need" 结构差不多。
 - **Language model：** 该结构相当于上面的 decoder 部分，典型的如 GPT 就是，这里其实就是延续的 GPT  的思路。mask 方式当然是 Causal 了。
 - **Prefix LM：** full-visible 与 causal 都有着各自的缺陷，见：[就最近看的paper谈谈预训练语言模型发展](https://zhuanlan.zhihu.com/p/79371603)。Causal with prefix算是二者的均衡。
 
-模型结构的最终实验结果如下：
+**模型结构的最终实验结果如下：**
 
-![屏幕快照 2020-04-06 下午9.41.20.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdkdoirdb7j30qk0bfq5j.jpg)
+![](image/T5_4.png)
 
 对于目标函数的选择，这里比较了 Denoising（BERT式）以及 LM（GPT式）两种方法。从上标中我们可以得出以下结论：
 
@@ -281,13 +279,15 @@ T5 本质上就是解决了人们对如何才能训练一个好的 PTM 的疑问
 
 ### 6. unsupervised objectives
 
-![](https://pic3.zhimg.com/80/v2-247e53593f78282caf557d84c1d2c1fa_720w.jpg)
+![](image/T5_11.png)
 
 文章按照上图中的顺序，从左到右依次探讨。
 
+#### 6.1   High-level approachs
+
 首先是 High-level approachs， 此处主要探讨的是，几种常见不同的目标函数的结果，主要包括以下三种，它们的输入输出如上图所示：
 
-![屏幕快照 2020-04-09 上午10.51.14.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdnbqyj4skj30v703274u.jpg)
+![](image/T5_5.png)
 
 图中，`<M> ` 表示 `[MASK]` 标志
 
@@ -295,71 +295,71 @@ T5 本质上就是解决了人们对如何才能训练一个好的 PTM 的疑问
 - **masked language modeling(MLM)：** 就是BERT那种形式。随机替换15%的token， 其中 90% 替换为[MASK]标志，10% 替换为随机token。
 - **deshuffling objective：** 该方法会shuffle 句子中的token，并要求预测原始的句子。
 
-![屏幕快照 2020-04-09 上午10.30.24.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdnb5ayi7sj30ri04lq3l.jpg)
+![](image/T5_6.png)
 
 三个结果的比较如上图所示， 我们看到， BERT-Style 的结果往往是最好的， prefix language modeling objective 能获得相近的结果。
 
+#### 2. bert Mask 策略
+
 本节第二部分就是进一步探讨， 在 BERT-Style 内部，哪种方式 mask 方式是最好的呢？
 
-![屏幕快照 2020-04-09 上午10.51.43.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdnbrhlkegj30w402ijs0.jpg)
-
-其中， `<X>, <Y>, <Z>` 表示随机替换的token。
+![](image/T5_7.png)
 
 首先，第一个探讨的问题就是 mask 策略，如上图所示：
 
-- mask token： mask 掉 token，将替换的token 换成 [MASK]（类似 BERT）
-- replace span：为了提高计算效率。将句子中span的token替换为其他的token（类似 SpanNERT）
-- drop tokens： 直接丢弃掉 tokens。
+- **mask token：** mask 掉 token，将替换的token 换成 [MASK]（类似 BERT）
+- **replace span：**为了提高计算效率。将句子中span的token替换为其他的token（类似 SpanBERT）
+- **drop tokens：** 直接丢弃掉 tokens。
 
-![屏幕快照 2020-04-09 上午10.41.55.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdnbhz3jafj30qj04n3zh.jpg)
+![](image/T5_8.png)
 
 这三种方法的结果如上图所示，可以得出， Replace span的方法是最好的。
 
-![屏幕快照 2020-04-09 上午10.33.35.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdnb8nakk7j30og06e0tm.jpg)
+接下来就探讨，**应该mask 掉多少百分比的文本呢？**如下图所示，最终发现 15% 的效果是最好的。
 
-接下来就探讨，应该mask 掉多少百分比的文本呢？如上图所示，最终发现 15% 的效果是最好的。
+![](image/T5_9.png)
 
-![屏幕快照 2020-04-09 上午10.59.40.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdnbzpvz74j30nj05kaau.jpg)
+最后， 前面得出要采用 replace span 方法，那么 **span 的长度应该采用多长呢**？结果如上图所示， 最终发现 3 的长度是最好的。
 
-最后， 前面得出要采用 replace span 方法，那么 span 的长度应该采用多长呢？结果如上图所示， 最终发现 3 的长度是最好的。
+![](image/T5_10.png)
 
 ### 7. pre-training datasets
 
-本节探讨预训练数据集的重要性，主要分为两个部分： 数据集的选择以及数据集大小的选择。
+本节探讨预训练数据集的重要性，主要分为两个部分： **数据集的选择**以及**数据集大小**的选择。
 
-**预训练数据集的选择**
+#### 7.1 预训练数据集的选择
 
 在数据集的选择中，主要比较了 **C4**， **Unfiltered C4**（未经过过滤的C4文本），**RealNews-like**，**WebText-like**，**Wikipedia**，**Wikipedia + Toronto Books Corpus** 这几个数据集， 其结果如下：
 
-![屏幕快照 2020-04-06 下午6.07.55.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdk7n82ekej30lw06igmt.jpg)
+![](image/T5_12.png)
 
 上表可以发现：
 
 - Unfiltered C4 是未经过上述策略过滤的数据，与 C4 比较就可以发现， C4的效果明显提升，这再次验证了一个高质量数据集的重要性。
 - Wikipedia + TBC 数据集在 SuperGLUE 上的表现要比 C4好，这说明预训练数据集与任务数据集之间的相关性是十分重要的。即 pre-training on in-domain unlabeled data can improve performance on downstream tasks. 但需要注意的是单领域的数据集往往较小，因此可能会产生一些问题。
 
-**预训练数据集的大小**
+#### 7.2 预训练数据集的大小
 
 此处主要探讨两个问题：**数据集的大小**以及**样本重复**所带来的影响。我们选择的 Full Dataset 的大小为 $2^{35} B$ tokens，只是 C4 的一个子集。 实验结果如下：
 
-![屏幕快照 2020-04-06 下午7.25.35.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdk9r9tqe0j30no06z3zk.jpg)
+![](image/T5_13.png)
 
-![屏幕快照 2020-04-06 下午7.26.52.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdk9shrqr3j30g40953zm.jpg)
+![](image/T5_14.png)
 
 从实验结果中我们可以看出：
 
 - 随着数据集 size 的减小， performance 在降低。通过 Training loss 曲线，随着数据集size的减小， training loss，这说明存在一定的过拟合现象，模型对小的数据集存在 memorize 现象。
 - 当样本重复64次时，所带来的影响是有限的，这说明一定程度的预训练数据重复并不会带来损害。
 
-### 8. training  strategy - fine-tune
+### 8. fine-tune
 
-本节讨论了用于如何在 Text-to-Text 上使用微调手段。主要有三种手段：
+本节讨论了用于**如何在 Text-to-Text 上使用微调手段。**主要有三种手段：
 
 - 微调 endocer-decoder 的所有参数。 
-- **adapter layers：** 在decoder 外添加一层 dense-Relu-dense的 前馈网络，微调该前馈网络而不是微调所有参数。 同时， 该前馈网络的维度选择也十分重要，因此作者比较了多个维度。
+- **adapter layers：** 在decoder 外添加一层 dense-Relu-dense的 前馈网络，微调该前馈网络而不是微调所有参数。 同时， 该前馈网络的维度 d 的选择也十分重要，因此作者比较了多个维度。
 - **gradual unfreezing：** 即随着时间的推移，越来越多的参数参与训练。最开始，只有最后一层开始训练，然后，随着时间推移，慢慢加入前面层的参数，直到所有的参数都参与训练。
 
-![屏幕快照 2020-04-12 下午1.36.00.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdqxdjp36dj30p908odhh.jpg)
+![](image/T5_15.png)
 
 从上图中我们发现：
 
@@ -368,13 +368,27 @@ T5 本质上就是解决了人们对如何才能训练一个好的 PTM 的疑问
 - 对于 High-resource 任务往往需要更大 的 d
 - 对于微调来说， adapter layers 是一个不错的手段，能够很好的权衡 performance 与 训练性能， 且 d 的选择也颇为重要。
 
+### 9. Multi-task learning
+
+
+
+### 10. Combining multi-task learning with fine-tuning
+
+
+
 ### 11. scaling
 
-![屏幕快照 2020-04-06 下午9.01.00.png](http://ww1.sinaimg.cn/large/006gOeiSly1gdkcigriu6j30n609g761.jpg)
+![](image/T5_16.png)
 
-本节主要讨论了几个 Scaling 策略所带来的影响。主要涉及到的策略有：增大模型size， 增加 training steps， 增大 batch size。需要注意的是，当增加 trainging steps与 batch size 时，也要相应的增加训练数据。那其实问题就回到了，增加数据与增大模型所带来的效果增益。
+本节主要讨论了几个 **Scaling 策略**所带来的影响。主要涉及到的策略有：增大模型size， 增加 training steps， 增大 batch size。需要注意的是，**当增加 trainging steps与 batch size 时，也要相应的增加训练数据。**那其实问题就回到了，增加数据与增大模型所带来的效果增益。
 
-从结果来看，增加数据与增大模型对performance 都是有影响的，且增大模型所带来的增益更大，且这两种 scaling 同时使用效果更佳。
+从结果来看，**增加数据与增大模型对performance 都是有影响的**，且增大模型所带来的增益更大，且这两种 scaling 同时使用效果更佳。
+
+### 12.  T5 模型： put it all together
+
+
+
+
 
 
 
@@ -396,5 +410,5 @@ T5 本质上就是解决了人们对如何才能训练一个好的 PTM 的疑问
 
 [2] RoBERTa: A Robustly Optimized BERT Pretraining Approach
 
-[3] T5: Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer
+[4] T5: Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer
 

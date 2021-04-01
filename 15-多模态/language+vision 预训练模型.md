@@ -80,6 +80,12 @@
 
 ![](image/VideoBERT.png)
 
+#### 1. 输入格式
+
+```
+
+```
+
 
 
 
@@ -118,6 +124,10 @@
 
 [10] Oscar: Object-Semantics Aligned Pre-training for Vision-Language Tasks   - 2020-6
 
+[11] M6: A Chinese Multimodal Pretrainer 2021-5
+
+
+
 **Image-based 双流模型：**
 
 [1] ViL-BERT: Pretraining Task-Agnostic Visiolinguistic Representations for Vision-and-Language Tasks  2019-8
@@ -125,6 +135,8 @@
 [2] Lxmert: Learning cross-modality encoder representations from transformers. 2019-8
 
 [3] ERNIE-ViL: Knowledge Enhanced Vision-Language Representations Through Scene Graph  - 2020-6
+
+[4] WenLan: Bridging Vision and Language by Large-Scale Multi-Modal Pre-Training 2021-5
 
 
 

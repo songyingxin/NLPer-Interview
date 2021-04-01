@@ -1,7 +1,5 @@
 # Attention 机制 -- Transformer
 
----
-
 ## 推荐先看
 
 [The Illustrated Transformer](<https://jalammar.github.io/illustrated-transformer/>)
