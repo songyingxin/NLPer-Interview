@@ -1,5 +1,14 @@
 # Attention 机制 -- Transformer
 
+```
+https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247513060&idx=1&sn=8d96a41ed097c9c4acf1b3d54af271ba&chksm=970f9b32a0781224fe7a450ed7428b9943839bacdb1874098469a4946234dfd8aea4ed8caf4b&scene=21&cur_album_id=1350016038754385921#wechat_redirect
+https://mp.weixin.qq.com/s?__biz=MzIwNzc2NTk0NQ==&mid=2247503650&idx=1&sn=c2030b24daa7bf0f227379dcb639930f&scene=21#wechat_redirect
+```
+
+
+
+
+
 ## 推荐先看
 
 [The Illustrated Transformer](<https://jalammar.github.io/illustrated-transformer/>)

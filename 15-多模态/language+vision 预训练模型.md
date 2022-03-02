@@ -102,6 +102,12 @@
 
 ## Reference
 
+**综述**
+
+[1] VLP: A Survey on Vision-Language Pre-training
+
+
+
 **Image-based 单流模型：**
 
 [1] Visualbert: A simple and performant baseline for vision and language  2019-8
