@@ -37,8 +37,6 @@ tags: 深度学习
 
 归一化后，寻求最优解的过程为：
 
-![2](D:\Github\NLPer-Interview\img\Normalization\2.jpg)
-
 在未归一化的时候， 由于 $\theta_1$ 的更新幅度要比  $\theta_2$ 小， 因此  $\theta_2$ 的应该要比  $\theta_1$ 要大，但是在实际中，我们使用常规梯度下降法时，我们各个的学习率都是一样的，这也就造成了 $\theta_2$ 的更新会比较慢，结果就是寻求最优解的过程会走很多弯路导致模型收敛速度缓慢。
 
 我们来实际举例， 假设在未归一化的时候， 我们的损失函数为：
@@ -131,7 +129,7 @@ ICS 指的是在训练过程中由于网络参数的变化而导致各层网络�
 
 ### 4. BN 与 LN 的区别是什么？
 
-LN 对层进行 Normalization ， BN 对 batch 进行 Normalization。 LN 拜托了对 batch size 的依赖， 在 NLP 领域，使用极为广泛， 基本不用 BN。 
+LN 对层进行 Normalization ， BN 对 batch 进行 Normalization。 LN 摆脱了对 batch size 的依赖， 在 NLP 领域，使用极为广泛， 基本不用 BN。 
 
 我个人的认为是， BN 是对batch进行操作，然而， 语言的复杂度使得 一个 batch 的数据对于全局的数据分布估计极为不准，这使得 BN 的效果变得很差。
 

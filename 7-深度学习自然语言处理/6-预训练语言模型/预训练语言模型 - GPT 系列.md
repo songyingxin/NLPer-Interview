@@ -140,8 +140,6 @@ GPT 3.0 本质上是探索超大型预训练语言模型在 zero-shot上的可�
 2. few-shot 存在一定可能性
 3. language model 预训练任务能够学习到上下文内容
 
-
-
 ## Questions
 
 
